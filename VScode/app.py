@@ -1,10 +1,19 @@
+"""
+TO DO:
+1. impliment authentication/passowrds (with cookies if possible)
+2. fix deployment in App ENgine
+3. Drill down KPI's and make more charts
+4. IF TIME add something to do with NLP
+"""
+
 from pandas import value_counts
 from bq_api import *
 from dash import Dash, dcc, html, Input, Output
 import plotly.graph_objects as go
 import plotly.express as px
 
-app = Dash(__name__)
+app = Dash(__name__) # NEED TO FIGURE OUT HOW TO DEPLOY USING gunicorn
+server=app.server
 
 
 app.layout = html.Div([
