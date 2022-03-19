@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "striped-micron-344413",
+  "private_key_id": "2690ae0e49749820c5e1556a47ae30605786db21",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1YC5BoNPNFfnP\nJG4p2iL0JLoMLujYoNkoqN+SvQkIKgw4tOEHCPPnUM7pl4c48qR2GOR0o+svjhcy\nVvZudOWQTRMeA5fjy7Rm4W1InL0rZFUNKHRKKaXP1vSZun9V+p+/0Qv/dD8laQ6A\nrxpRw9unbBANY2gvXBkbuGQQ7LqqKirvxpGFrfR+FJ/7mec6BhuCVRiGRw3swdPJ\nrj/dyCjp/DVD8YUsSKlkg9kLMRInlpuDOynv5acPoCazeDDwyfXJzK7TZtOTnokN\nh5GfuOZ9SHoyXIieSnfXWA9VSSlhIgvAZvSIq7XKtAMn46edj7i3rS5/8Ofrv+JE\nEYEbxeI/AgMBAAECggEAFg+2YKYyzQHMymzYd3/Ae6jR9nRoPx1FfMQZuawDoroW\nlXku29+zZyH1oQUc3gjphzHc6/EaRMUIPkfEnsfaOnSdjCuMuJkI/vCRjeD+w33n\nOHwAtRqewAqZ4u8D2Q3si3TefDqECcVfDbj+vw5PM+yZgT9jp0sRBMWnakWZKORW\nh9qjb9un7hS/wJbru7aslnqPCQY+9O82b5gqgFXrDa4aIH945pk0GthzwcdkSuYF\n9aBRpnzFTv696i0t7VqDUVLwbYCa8k3SGr5/a+aRrH4H0uyOOlVEPwDFg3WvGmxa\nhCv8G1dbwFjRDFwe6Gx9TyELiEZEkGqtjoaxxC2JqQKBgQDrV9Oecbjwuj5ej9BZ\nDcyoWNJ8InJsRqv+LTqlMQC+TK2WCbdFzrov3p0HVAvBDkYNgEMc0ASSzv2q/uel\naGe7usABfhU3KGGZ2cq0MLxEQiYUl+0c4mgIBmH5Y6BEgYXGOdNoOewUtKAzXKpZ\n1L8Tr/+A1jjRZ949Ed/FyaRNBwKBgQDFS7Q4gmlfPDpkxKRv0gCAVxeGY5CMrBnu\n5DEf0joZv0uTyqB0csPHMK8pYV0Icl+zhDRWUcmcKw1c5OjrqooPKL+08j6qR3hV\nOjzV5+4VYA8yyJ6fx2XQdLZKOAQc7PzLGtEBkBo8sKRQV5cqaLMsFVTszkFySs5s\n+SaorrkrCQKBgEJnmbKPbBugsZCFC8jU9/ZYeavFHHwoxMcHhBCwbwFDKYe4Xho4\nZpizO6Oht19V47ZThpxOpbu25CSnoD0v5HU4EI1bQik6H7AFoAiP589qysvswl7w\nE2KQSnzP+5zY3yI7lsdF8LM29C0J7JdETFYFxxZXW9jacf7RWE66wr1pAoGBAKK4\ngXdp98ZYQkEB/i1LoqY3Lmvkij+7Ydgp1GpOVSUPJSJLqHLihJ4whQc4CicBTfUd\nQJ1A72siBu9qzMAx85P1I8f1U8HVGGYSlkJF+5Mdmutjk5BsQIjg+cfU02+X9hb9\nkwwa8cjEV4D7/O05VS0ymsyEgG3nTMGL7FqLYKUhAoGATZ6/YG48mrmVv4Pb+QtN\nPjVI96cgrdjq/cv2Hd8Oebvtso+FCEXPz9X5xJnI66+Yor1LCID2rcF8EKVaNux6\nex4o1ionxGobND1EAHnJkXyBYd4ixQ8M2BIFWeW1Kv3SDBQDmSZ5mwZ/F3MJ9L0B\nIyAHQfGa81M7838pKz+ptW8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "tip-api@striped-micron-344413.iam.gserviceaccount.com",
+  "client_id": "114831782216797581942",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tip-api%40striped-micron-344413.iam.gserviceaccount.com"
+}
