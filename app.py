@@ -13,12 +13,22 @@ THEMES: https://bootswatch.com/
 from pandas import value_counts
 from bq_api import *
 from dash import Dash, dcc, html, Input, Output, dash_table
+import dash_auth
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.express as px
 
+# Keep this out of source code repository - save in a file or a database
+VALID_USERNAME_PASSWORD_PAIRS = {
+    'username': 'password'
+}
+
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server=app.server
+auth = dash_auth.BasicAuth(
+    app,
+    VALID_USERNAME_PASSWORD_PAIRS
+)
 
 
 app.layout = html.Div([
