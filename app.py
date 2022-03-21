@@ -6,9 +6,11 @@ TO DO:
 4. IF TIME add something to do with NLP
 """
 
+# CHANGE SCALE OF Y AXIS TO LOG SCALE
+
 from pandas import value_counts
 from bq_api import *
-from dash import Dash, dcc, html, Input, Output
+from dash import Dash, dcc, html, Input, Output, dash_table
 import plotly.graph_objects as go
 import plotly.express as px
 
@@ -34,18 +36,24 @@ app.layout = html.Div([
                     x = df_priority_raised.priority,
                     y = df_priority_raised.Count
                 )
-            ]
+            ],
+            'layout' : {
+                'title' : "Number of issues raised per priority level"
+            }
         }
     ),
-    dcc.Graph(
-        id="scatter_chart_closed",
+    dcc.Graph( # for average resolution time divided into priority
+        id="avg_reso_time_raised",
         figure = {
             'data' : [
                 go.Bar( #this allows there to be a graph from a set dataframe
-                    x = df_priority_closed.priority,
-                    y = df_priority_closed.Count
+                    x = Average_res_time_raised.Priority,
+                    y = Average_res_time_raised.AVE_Resolution_time_hours
                 )
-            ]
+            ],
+            'layout' : {
+                'title' : "Average resolution time by priority level"
+            }
         }
     ),
     dcc.Dropdown(
@@ -55,11 +63,12 @@ app.layout = html.Div([
             {"value": "two", "label": "two"}
         ]
     ),
-    html.H2(id="id-changes")
+    html.H2(id="id-changes"),
+    dash_table.DataTable(issue_cause_raised.to_dict('records'),[{"name": i, "id": i} for i in issue_cause_raised.columns], id='tbl'),
 ])
 # NEED TO FIGURE OUT WHY THIS CALLBACK IS CAUSING PAGE TO FREEZE
-"""@app.callback(
-    Output(component_id="scatter_chart", component_property="figure"),
+@app.callback(
+    Output(component_id="scatter_chart_raised", component_property="figure"),
     Input(component_id="priority_drop", component_property="value")
 )
 def update_data(value):
@@ -72,7 +81,26 @@ def update_data(value):
                 )
             ]
         }
-        return figure """
+        return figure
+    elif value == 'Closed':
+        figure = {
+            'data' : [
+                go.Bar( #this allows there to be a graph from a set dataframe
+                    x = df_priority_closed.priority,
+                    y = df_priority_closed.Count
+                )
+            ]
+        }
+    else:
+        figure = {
+            'data' : [
+                go.Bar( #this allows there to be a graph from a set dataframe
+                    x = df_priority_backlog.priority,
+                    y = df_priority_backlog.Count
+                )
+            ]
+        }
+    return figure
 
 @app.callback(
     Output(component_id="id-changes", component_property="children"),
@@ -88,17 +116,3 @@ def update_bar_chart(value):
 
 
 app.run_server(debug=True)
-
-"""
-                go.Bar( #this allows there to be a graph from a set dataframe
-                    x = df_priority_raised.priority,
-                    y = df_priority_raised.Count
-                )
-
-                , 
-            'layout': go.Layout(
-                title = 'This is title',
-                hovermode='closest'
-
-            )
-            """
