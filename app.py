@@ -6,6 +6,7 @@ TO DO:
 4. IF TIME add something to do with NLP
 
 THEMES: https://bootswatch.com/
+styling cheat sheet: https://dashcheatsheet.pythonanywhere.com/
 """
 
 # CHANGE SCALE OF Y AXIS TO LOG SCALE
@@ -23,73 +24,91 @@ VALID_USERNAME_PASSWORD_PAIRS = {
     'username': 'password'
 }
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.SIMPLEX])
 server=app.server
+# BASIC AUTHENTICATION USING DASH IN-BUILT TOOL
 auth = dash_auth.BasicAuth(
     app,
     VALID_USERNAME_PASSWORD_PAIRS
 )
 
-
 app.layout = html.Div([
-    html.H1("Term Integration Project: KPIs", style={'textAlign': 'center'}),
-    html.H3("Select between raised, closed, and backloged"),
-    dcc.Dropdown(
-        id="priority_drop",
-        options= [
-            {"value": "Raised", "label": "Raised"},
-            {"value": "Closed", "label": "Closed"},
-            {"value": "Backlog", "label": "Backlog"}
-        ]
-    ),
     html.Div([
-        dcc.Graph(
-        id="scatter_chart_raised",
-        figure = {
-            'data' : [
-                go.Bar( #this allows there to be a graph from a set dataframe
-                    x = df_priority_raised.priority,
-                    y = df_priority_raised.Count,
-                )
-            ],
-            'layout' : {
-                'title' : "Number of issues raised per priority level",
-                'type' : 'log'
-            }
-        }
-        ),
-        dcc.Graph( # for average resolution time divided into priority
-            id="avg_reso_time_raised",
-            figure = {
-                'data' : [
-                    go.Bar( #this allows there to be a graph from a set dataframe
-                        x = Average_res_time_raised.Priority,
-                        y = Average_res_time_raised.AVE_Resolution_time_hours
-                    )
-                ],
-                'layout' : {
-                    'title' : "Average resolution time by priority level"
+        dbc.Row([
+            dbc.Col(html.Img(className="image", width="25%", src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fiberia-airlines-1-logo-png-transparent.png&f=1&nofb=1", alt="Iberia"), md=12)
+        ], justify="center")
+    ]),
+    html.H1("Term Integration Project: KPIs", style={'textAlign': 'center'}),
+    html.Div([
+        dbc.Row([
+            dbc.Col(html.P("Select between raised, closed, and backloged:", style={'textAlign': 'center'}
+            ), md=4)
+        ], justify="center", align="end"),
+        dbc.Row([
+            dbc.Col(dcc.Dropdown(
+                id="priority_drop",
+                options= [
+                    {"value": "Raised", "label": "Raised"},
+                    {"value": "Closed", "label": "Closed"},
+                    {"value": "Backlog", "label": "Backlog"}
+                ]
+            ), md=4),
+        ], justify="center"),
+    ], ),
+    html.Div([
+        dbc.Row([
+            dbc.Col(dcc.Graph(
+                id="scatter_chart_raised",
+                figure = {
+                    'data' : [
+                        go.Bar( #this allows there to be a graph from a set dataframe
+                            x = df_priority_raised.priority,
+                            y = df_priority_raised.Count,
+                        )
+                    ],
+                    'layout' : {
+                        'title' : "Number of issues raised per priority level",
+                        'type' : 'log',
+                        'plot_bgcolor' : 'rgba(0, 0, 0, 0)'
+                    }
                 }
-            }
-        ),
+            ), md=6),
+            dbc.Col(dcc.Graph( # for average resolution time divided into priority
+                id="avg_reso_time_raised",
+                figure = {
+                    'data' : [
+                        go.Bar( #this allows there to be a graph from a set dataframe
+                            x = Average_res_time_raised.Priority,
+                            y = Average_res_time_raised.AVE_Resolution_time_hours
+                        )
+                    ],
+                    'layout' : {
+                        'title' : "Average resolution time by priority level"
+                    }
+                }
+            ), md=6)
+        ]),
     ]), # , style={'display': 'flex', 'flex-direction': 'row'}
-    
-    dcc.Dropdown(
-        id="dropdown",
-        options= [
-            {"value": "one", "label": "one"},
-            {"value": "two", "label": "two"}
-        ]
-    ),
-    html.H2(id="id-changes"),
-    dash_table.DataTable(issue_cause_raised.to_dict('records'),[{"name": i, "id": i} for i in issue_cause_raised.columns], id='tbl'),
-])
+        
+    html.Div([
+        html.P('Top causes of reported issues', style={'textAlign': 'center'}),
+        dbc.Row([
+            dbc.Col(dcc.Graph(id="cause_pie"), md=8)
+        ], justify="center")
+    ]),
+    #dash_table.DataTable(issue_cause_raised.to_dict('records'),[{"name": i, "id": i} for i in issue_cause_raised.columns], id='tbl'),
+], style={'backgroundColor': '#fffeb5'})
 
 scatter_chart_raised_layout = {
-                'title' : "Number of issues raised per priority level"
+                'title' : "Number of issues raised per priority level",
+                'type' : 'log',
+                'plot_bgcolor' : 'rgba(0, 0, 0, 0)',
+                'paper_bgcolor' : 'rgba(0, 0, 0, 0)'
             }
 avg_reso_time_raised_layout = {
-                'title' : "Average resolution time by priority level"
+                'title' : "Average resolution time by priority level",
+                'plot_bgcolor' : 'rgba(0, 0, 0, 0)',
+                'paper_bgcolor' : 'rgba(0, 0, 0, 0)'
             }
 
 # callback for number of issues raised per priority
@@ -170,8 +189,40 @@ def update_data(value):
         }
     return figure
 #_______
-
+#CALLBACK FOR PIC CHART
 @app.callback(
+    Output(component_id="cause_pie", component_property="figure"),
+    Input(component_id="priority_drop", component_property="value")
+)
+def update_pie(value):
+    if value == "Raised":
+        piechart = px.pie(
+            issue_cause_raised,
+            values = issue_cause_raised["Incident_Count"],
+            names = issue_cause_raised["Inc__Type"]
+        )
+        piechart.update_traces(textposition='inside', textinfo='percent+label')
+        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
+    elif value == "Closed":
+        piechart = px.pie(
+            issue_cause_closed,
+            values = issue_cause_closed["Incident_Count"],
+            names = issue_cause_closed["Inc__Type"]
+        )
+        piechart.update_traces(textposition='inside', textinfo='percent+label')
+        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
+    else:
+        piechart = px.pie(
+            issue_cause_backlog,
+            values = issue_cause_backlog["Incident_Count"],
+            names = issue_cause_backlog["Inc__Type"]
+        )
+        piechart.update_traces(textposition='inside', textinfo='percent+label')
+        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
+    return piechart
+
+
+"""@app.callback(
     Output(component_id="id-changes", component_property="children"),
     Input(component_id="dropdown", component_property="value")
 )
@@ -181,9 +232,7 @@ def update_bar_chart(value):
     elif value == "two":
         return df_priority_raised.iloc[1,1]
     else:
-        return "no value selected yet"
+        return "no value selected yet" """
 
-
-#app.run_server(debug=True)
 if __name__ == "__main__":
     app.run_server(debug=True)
