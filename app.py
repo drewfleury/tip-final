@@ -21,10 +21,11 @@ import plotly.express as px
 
 # Keep this out of source code repository - save in a file or a database
 VALID_USERNAME_PASSWORD_PAIRS = {
-    'username': 'password'
+    'username': 'password',
+    'Admin' : 'firefly'
 }
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.SIMPLEX])
+app = Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
 server=app.server
 # BASIC AUTHENTICATION USING DASH IN-BUILT TOOL
 auth = dash_auth.BasicAuth(
@@ -35,7 +36,7 @@ auth = dash_auth.BasicAuth(
 app.layout = html.Div([
     html.Div([
         dbc.Row([
-            dbc.Col(html.Img(className="image", width="25%", src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fiberia-airlines-1-logo-png-transparent.png&f=1&nofb=1", alt="Iberia"), md=12)
+            dbc.Col(html.Img(className="image", width="25%", src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fiberia-airlines-1-logo-png-transparent.png&f=1&nofb=1", alt="Iberia"))
         ], justify="center")
     ]),
     html.H1("Term Integration Project: KPIs", style={'textAlign': 'center'}),
@@ -96,8 +97,14 @@ app.layout = html.Div([
             dbc.Col(dcc.Graph(id="cause_pie"), md=8)
         ], justify="center")
     ]),
+    
+    html.Div([
+        dbc.Row([
+            dbc.Col(html.Strong("Made in Madrid by Drew"), style={'textAlign': 'center'})
+        ])
+    ])
     #dash_table.DataTable(issue_cause_raised.to_dict('records'),[{"name": i, "id": i} for i in issue_cause_raised.columns], id='tbl'),
-], style={'backgroundColor': '#fffeb5'})
+], style={'backgroundImage': 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallup.net%2Fwp-content%2Fuploads%2F2018%2F09%2F27%2F15991-abstract-minimalistic-white.jpg&f=1&nofb=1'})
 
 scatter_chart_raised_layout = {
                 'title' : "Number of issues raised per priority level",
@@ -127,7 +134,9 @@ def update_data_num_issues_raised(value):
             ],
             'layout' : scatter_chart_raised_layout
         }
-        return figure
+        #figure.update_yaxes(type="log")
+
+        #return figure
     elif value == 'Closed':
         figure = {
             'data' : [
@@ -138,6 +147,7 @@ def update_data_num_issues_raised(value):
             ],
             'layout' : scatter_chart_raised_layout
         }
+        #figure.update_yaxes(type="log")
     else:
         figure = {
             'data' : [
@@ -148,6 +158,7 @@ def update_data_num_issues_raised(value):
             ],
             'layout' : scatter_chart_raised_layout
         }
+        #figure.update_yaxes(type="log")
     return figure
 
 # callback for average resolution time graph
@@ -220,6 +231,9 @@ def update_pie(value):
         piechart.update_traces(textposition='inside', textinfo='percent+label')
         piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
     return piechart
+
+def text_search(input):
+    pass #return query_to_df(SELECT)
 
 
 """@app.callback(
