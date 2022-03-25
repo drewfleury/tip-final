@@ -35,5 +35,13 @@ issue_cause_raised = query_to_df('SELECT Inc__Type, COUNT(Inc__Type) AS Incident
 issue_cause_closed = query_to_df('SELECT Inc__Type, COUNT(Inc__Type) AS Incident_Count FROM tip_dataset_1.closed GROUP BY Inc__Type ORDER BY Incident_Count DESC')
 issue_cause_backlog = query_to_df('SELECT Inc__Type, COUNT(Inc__Type) AS Incident_Count FROM tip_dataset_1.backlog GROUP BY Inc__Type ORDER BY Incident_Count DESC')
 
+weekly_incidents_riaised = query_to_df('SELECT EXTRACT(WEEK FROM Create_Date_Time) AS Week, EXTRACT(YEAR FROM Create_Date_Time) AS Year, COUNT(Create_Date_Time) AS Incident_Count FROM tip_dataset_1.raised \
+GROUP BY Week, Year')
+weekly_incidents_closed = query_to_df('SELECT EXTRACT(WEEK FROM Creation_Date_Time) AS Week, EXTRACT(YEAR FROM Creation_Date_Time) AS Year, COUNT(Creation_Date_Time) AS Incident_Count FROM tip_dataset_1.closed \
+WHERE EXTRACT(YEAR FROM Creation_Date_Time) = 2021 GROUP BY Week, Year ORDER BY Week')
+weekly_incidents_backlog = query_to_df('SELECT EXTRACT(WEEK FROM Creation_Date_Time) AS Week, EXTRACT(YEAR FROM Creation_Date_Time) AS Year, COUNT(Creation_Date_Time) AS Incident_Count FROM tip_dataset_1.backlog \
+WHERE EXTRACT(YEAR FROM Creation_Date_Time) = 2021 GROUP BY Week, Year ORDER BY Week')
+
+weekly_incidents_closed
  
 # %%

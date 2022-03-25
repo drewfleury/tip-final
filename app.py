@@ -39,10 +39,10 @@ app.layout = html.Div([
             dbc.Col(html.Img(className="image", width="25%", src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fiberia-airlines-1-logo-png-transparent.png&f=1&nofb=1", alt="Iberia"))
         ], justify="center")
     ]),
-    html.H1("Term Integration Project: KPIs", style={'textAlign': 'center'}),
+    html.H1("Incidents Report", style={'textAlign': 'center'}),
     html.Div([
         dbc.Row([
-            dbc.Col(html.P("Select between raised, closed, and backloged:", style={'textAlign': 'center'}
+            dbc.Col(html.P("Select between raised, closed, and backloged reports:", style={'textAlign': 'center'}
             ), md=4)
         ], justify="center", align="end"),
         dbc.Row([
@@ -52,7 +52,8 @@ app.layout = html.Div([
                     {"value": "Raised", "label": "Raised"},
                     {"value": "Closed", "label": "Closed"},
                     {"value": "Backlog", "label": "Backlog"}
-                ]
+                ],
+                value="Raised"
             ), md=4),
         ], justify="center"),
     ], ),
@@ -92,12 +93,31 @@ app.layout = html.Div([
     ]), # , style={'display': 'flex', 'flex-direction': 'row'}
         
     html.Div([
-        html.P('Top causes of reported issues', style={'textAlign': 'center'}),
+        #dbc.Row([
+            #dbc.Col(html.P('Top causes of reported issues', style={'textAlign': 'center'}), md=6)
+            #]),
         dbc.Row([
-            dbc.Col(dcc.Graph(id="cause_pie"), md=8)
+            dbc.Col(dcc.Graph(id="cause_pie", style={'textAlign': 'center'}), md=6),dbc.Col(
+                dcc.Graph(
+                id="weekly_chart",
+                figure = {
+                    'data' : [
+                        go.Bar( #this allows there to be a graph from a set dataframe
+                            x = weekly_incidents_riaised.Week,
+                            y = weekly_incidents_riaised.Incident_Count,
+                        )
+                    ],
+                    'layout' : {
+                        'title' : "Number of issues raised per week in 2021",
+                        'type' : 'log',
+                        'plot_bgcolor' : 'rgba(0, 0, 0, 0)'
+                    }
+                }
+            )
+            , md=6)
         ], justify="center")
     ]),
-    
+
     html.Div([
         dbc.Row([
             dbc.Col(html.Strong("Made in Madrid by Drew"), style={'textAlign': 'center'})
@@ -114,6 +134,12 @@ scatter_chart_raised_layout = {
             }
 avg_reso_time_raised_layout = {
                 'title' : "Average resolution time by priority level",
+                'plot_bgcolor' : 'rgba(0, 0, 0, 0)',
+                'paper_bgcolor' : 'rgba(0, 0, 0, 0)'
+            }
+
+weekly_layout = {
+                'title' : "Number of issues raised per week in 2021",
                 'plot_bgcolor' : 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor' : 'rgba(0, 0, 0, 0)'
             }
@@ -200,7 +226,47 @@ def update_data(value):
         }
     return figure
 #_______
-#CALLBACK FOR PIC CHART
+#CALLBACK FOR WEEKLY INCIDENTS
+@app.callback(
+    Output(component_id="weekly_chart", component_property="figure"),
+    Input(component_id="priority_drop", component_property="value")
+)
+def update_data(value):
+    if value == 'Raised':
+        figure = {
+            'data' : [
+                go.Bar( #this allows there to be a graph from a set dataframe
+                    x = weekly_incidents_riaised.Week,
+                    y = weekly_incidents_riaised.Incident_Count,
+                )
+            ],
+            'layout' : weekly_layout
+        }
+        return figure
+    elif value == 'Closed':
+        figure = {
+            'data' : [
+                go.Bar( #this allows there to be a graph from a set dataframe
+                    x = weekly_incidents_closed.Week,
+                    y = weekly_incidents_closed.Incident_Count,
+                )
+            ],
+            'layout' : weekly_layout
+        }
+    else:
+        figure = {
+            'data' : [
+                go.Bar( #this allows there to be a graph from a set dataframe
+                    x = weekly_incidents_backlog.Week,
+                    y = weekly_incidents_backlog.Incident_Count,
+                )
+            ],
+            'layout' : weekly_layout
+        }
+    return figure
+
+
+#CALLBACK FOR PIE CHART
 @app.callback(
     Output(component_id="cause_pie", component_property="figure"),
     Input(component_id="priority_drop", component_property="value")
@@ -210,26 +276,29 @@ def update_pie(value):
         piechart = px.pie(
             issue_cause_raised,
             values = issue_cause_raised["Incident_Count"],
-            names = issue_cause_raised["Inc__Type"]
+            names = issue_cause_raised["Inc__Type"],
+            color_discrete_sequence=px.colors.sequential.Redor
         )
-        piechart.update_traces(textposition='inside', textinfo='percent+label')
-        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
+        piechart.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
+        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)', title="Top causes of reported incidents")
     elif value == "Closed":
         piechart = px.pie(
             issue_cause_closed,
             values = issue_cause_closed["Incident_Count"],
-            names = issue_cause_closed["Inc__Type"]
+            names = issue_cause_closed["Inc__Type"],
+            color_discrete_sequence=px.colors.sequential.Redor
         )
-        piechart.update_traces(textposition='inside', textinfo='percent+label')
-        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
+        piechart.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
+        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)', title="Top causes of reported incidents")
     else:
         piechart = px.pie(
             issue_cause_backlog,
             values = issue_cause_backlog["Incident_Count"],
-            names = issue_cause_backlog["Inc__Type"]
+            names = issue_cause_backlog["Inc__Type"],
+            color_discrete_sequence=px.colors.sequential.Redor
         )
-        piechart.update_traces(textposition='inside', textinfo='percent+label')
-        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
+        piechart.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
+        piechart.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)', title="Top causes of reported incidents")
     return piechart
 
 def text_search(input):
