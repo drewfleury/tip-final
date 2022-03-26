@@ -123,7 +123,7 @@ app.layout = html.Div([
             dbc.Col(html.H2("Advanced filtering", style={'textAlign': 'center'}))
         ], justify="center"),
         dbc.Row([
-            dbc.Col(html.P("Choose the column you want to filter by (default = Incident Description):"), md=4),
+            dbc.Col(html.P("Choose the column you want to filter by:"), md=4),
             dbc.Col(
                 dcc.Dropdown(
                 id="column_select_drop",
@@ -152,7 +152,7 @@ app.layout = html.Div([
             ),
         ], justify="center"),
         dbc.Row([
-            dbc.Col(html.P("Choose number of results to show (default = 5):"), md=4),
+            dbc.Col(html.P("Choose number of results to show"), md=4),
             dbc.Col(
                 dcc.Dropdown(
                 id="head_size",
@@ -184,6 +184,9 @@ app.layout = html.Div([
         dbc.Row([
             dbc.Col(dbc.Spinner(color="#A31523", children = dash_table.DataTable(
                 id="df_select",
+                style_header={
+                'backgroundColor': 'white',
+                'fontWeight': 'bold'},
                 #data=search("Incident_Description", '!!!!000076', 1).to_dict('records'),
                 style_table={'overflowX': 'auto'}
             )))
