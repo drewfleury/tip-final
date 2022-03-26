@@ -1,5 +1,7 @@
 #%%
 
+# THIS IS THE API TOOL USED TO QUERY THE BIGQUERY DATABASE USING SQL
+
 from google.cloud import bigquery
 import os
 import pandas as pd

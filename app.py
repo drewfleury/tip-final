@@ -1,13 +1,4 @@
-"""
-
-THEMES: https://bootswatch.com/
-styling cheat sheet: https://dashcheatsheet.pythonanywhere.com/
-"""
-
-# CHANGE SCALE OF Y AXIS TO LOG SCALE
-
-from sre_parse import State as st
-from pandas import value_counts
+"""Hi Pepe!"""
 from bq_api import *
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
@@ -35,6 +26,7 @@ auth = dash_auth.BasicAuth(
     VALID_USERNAME_PASSWORD_PAIRS
 )
 
+# APPLICATION LAYOUT
 app.layout = html.Div([
     html.Div([
         dbc.Row([
@@ -187,7 +179,6 @@ app.layout = html.Div([
                 style_header={
                 'backgroundColor': 'white',
                 'fontWeight': 'bold'},
-                #data=search("Incident_Description", '!!!!000076', 1).to_dict('records'),
                 style_table={'overflowX': 'auto'}
             )))
         ])
@@ -200,11 +191,7 @@ app.layout = html.Div([
             dbc.Col(html.Strong("Made in Madrid by Drew"), style={'textAlign': 'center'})
         ])
     ])
-], style={'background-color': '#E9E9E9'})#style={'background-image': 'url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallup.net%2Fwp-content%2Fuploads%2F2018%2F09%2F27%2F15991-abstract-minimalistic-white.jpg&f=1&nofb=1)'}
-
-
-
-
+], style={'background-color': '#E9E9E9'})
 
 scatter_chart_raised_layout = {
                 'title' : "Number of issues raised per priority level",
@@ -273,7 +260,6 @@ def update_data_num_issues_raised(value):
             ],
             'layout' : scatter_chart_raised_layout
         }
-        #figure.update_yaxes(type="log")
     elif value == 'Closed':
         figure = {
             'data' : [
@@ -285,7 +271,6 @@ def update_data_num_issues_raised(value):
             ],
             'layout' : scatter_chart_raised_layout
         }
-        #figure.update_yaxes(type="log")
     else:
         figure = {
             'data' : [
@@ -297,7 +282,6 @@ def update_data_num_issues_raised(value):
             ],
             'layout' : scatter_chart_raised_layout
         }
-        #figure.update_yaxes(type="log")
     return figure
 
 # callback for average resolution time graph
