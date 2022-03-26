@@ -42,6 +42,5 @@ WHERE EXTRACT(YEAR FROM Creation_Date_Time) = 2021 GROUP BY Week, Year ORDER BY 
 weekly_incidents_backlog = query_to_df('SELECT EXTRACT(WEEK FROM Creation_Date_Time) AS Week, EXTRACT(YEAR FROM Creation_Date_Time) AS Year, COUNT(Creation_Date_Time) AS Incident_Count FROM tip_dataset_1.backlog \
 WHERE EXTRACT(YEAR FROM Creation_Date_Time) = 2021 GROUP BY Week, Year ORDER BY Week')
 
-weekly_incidents_closed
- 
+
 # %%
